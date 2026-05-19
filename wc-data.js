@@ -73,7 +73,7 @@ const GROUP_MATCHES = [
   {id:'A1',g:'A',h:'MEX',a:'RSA',utc:'2026-06-11T19:00Z',md:1},
   {id:'A2',g:'A',h:'KOR',a:'CZE',utc:'2026-06-12T02:00Z',md:1},
   {id:'A3',g:'A',h:'CZE',a:'RSA',utc:'2026-06-18T16:00Z',md:2},
-  {id:'A4',g:'A',h:'MEX',a:'KOR',utc:'2026-06-19T03:00Z',md:2},
+  {id:'A4',g:'A',h:'MEX',a:'KOR',utc:'2026-06-19T02:00Z',md:2},
   {id:'A5',g:'A',h:'CZE',a:'MEX',utc:'2026-06-25T03:00Z',md:3},
   {id:'A6',g:'A',h:'RSA',a:'KOR',utc:'2026-06-25T03:00Z',md:3},
   // ── Bảng B ──────────────────────────────────────────
