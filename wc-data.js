@@ -141,7 +141,7 @@ const GROUP_MATCHES = [
   {id:'J6',g:'J',h:'JOR',a:'ARG',utc:'2026-06-28T02:00Z',md:3},
   // ── Bảng K ──────────────────────────────────────────
   {id:'K1',g:'K',h:'POR',a:'COD',utc:'2026-06-17T17:00Z',md:1},
-  {id:'K2',g:'K',h:'UZB',a:'COL',utc:'2026-06-18T03:00Z',md:1},
+  {id:'K2',g:'K',h:'UZB',a:'COL',utc:'2026-06-18T02:00Z',md:1},
   {id:'K3',g:'K',h:'POR',a:'UZB',utc:'2026-06-23T17:00Z',md:2},
   {id:'K4',g:'K',h:'COL',a:'COD',utc:'2026-06-24T03:00Z',md:2},
   {id:'K5',g:'K',h:'COL',a:'POR',utc:'2026-06-27T23:30Z',md:3},
