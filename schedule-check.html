@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Cup 2026 — Kiểm tra lịch thi đấu</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: monospace; font-size: 13px; background: #111; color: #eee; padding: 16px; }
+  h1 { font-size: 16px; margin-bottom: 12px; color: #fff; }
+  p.hint { color: #aaa; margin-bottom: 16px; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #222; padding: 6px 8px; text-align: left; color: #aaa; font-size: 11px; position: sticky; top: 0; }
+  tr:nth-child(even) td { background: #161616; }
+  td { padding: 4px 8px; border-bottom: 1px solid #222; vertical-align: middle; }
+  td.id { color: #888; width: 40px; }
+  td.teams { width: 120px; }
+  td.current { color: #4af; width: 130px; }
+  td.correct { width: 130px; }
+  td.status { width: 60px; text-align: center; }
+  input[type=text] {
+    background: #222; color: #fff; border: 1px solid #444;
+    padding: 3px 6px; width: 120px; font-family: monospace; font-size: 13px;
+    border-radius: 3px;
+  }
+  input[type=text]:focus { border-color: #4af; outline: none; }
+  input.changed { border-color: #fa4; background: #221800; }
+  input.ok { border-color: #4a4; background: #001800; }
+  .group-sep td { background: #1a1a1a; color: #888; font-size: 11px; padding: 3px 8px; }
+  #output {
+    margin-top: 20px; background: #1a1a1a; border: 1px solid #333;
+    padding: 12px; border-radius: 4px; white-space: pre; overflow-x: auto;
+    font-size: 12px; color: #cfc; display: none;
+  }
+  #output.has-changes { display: block; }
+  button {
+    margin-top: 14px; padding: 8px 20px; background: #4af; color: #000;
+    border: none; cursor: pointer; font-size: 13px; font-weight: bold;
+    border-radius: 4px; font-family: monospace;
+  }
+  button:hover { background: #6cf; }
+  .legend { margin-bottom: 10px; font-size: 11px; color: #888; }
+  .legend span { margin-right: 16px; }
+  .dot-ok { color: #4a4; }
+  .dot-chg { color: #fa4; }
+  .dot-empty { color: #555; }
+  #summary { margin-top: 10px; font-size: 12px; color: #fa4; }
+</style>
+</head>
+<body>
+<h1>⚽ World Cup 2026 — So sánh giờ VNT</h1>
+<p class="hint">
+  Mở <a href="https://vnexpress.net/the-thao/world-cup-2026/lich-thi-dau" target="_blank" style="color:#4af">VNExpress lịch thi đấu</a> ở tab khác,
+  rồi nhập giờ VNT đúng vào cột "VNExpress". Định dạng: <b>DD/M HH:MM</b> (vd: <b>12/6 02:00</b>).
+  Để trống nếu giờ đã đúng.
+</p>
+<div class="legend">
+  <span class="dot-ok">■ đúng</span>
+  <span class="dot-chg">■ cần sửa</span>
+  <span class="dot-empty">■ chưa nhập</span>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Trận</th>
+      <th>Hiện tại (VNT)</th>
+      <th>VNExpress (nhập vào)</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<button onclick="generateFixes()">Tạo danh sách sửa</button>
+<div id="summary"></div>
+<pre id="output"></pre>
+
+<script>
+// All 72 matches from wc-data.js
+const matches = [
+  {id:'A1',h:'MEX',a:'RSA',utc:'2026-06-11T19:00Z'},
+  {id:'A2',h:'KOR',a:'CZE',utc:'2026-06-12T02:00Z'},
+  {id:'A3',h:'CZE',a:'RSA',utc:'2026-06-18T16:00Z'},
+  {id:'A4',h:'MEX',a:'KOR',utc:'2026-06-19T02:00Z'},
+  {id:'A5',h:'CZE',a:'MEX',utc:'2026-06-25T03:00Z'},
+  {id:'A6',h:'RSA',a:'KOR',utc:'2026-06-25T03:00Z'},
+  {id:'B1',h:'CAN',a:'BIH',utc:'2026-06-12T19:00Z'},
+  {id:'B2',h:'QAT',a:'SUI',utc:'2026-06-13T19:00Z'},
+  {id:'B3',h:'SUI',a:'BIH',utc:'2026-06-18T19:00Z'},
+  {id:'B4',h:'CAN',a:'QAT',utc:'2026-06-18T22:00Z'},
+  {id:'B5',h:'SUI',a:'CAN',utc:'2026-06-24T19:00Z'},
+  {id:'B6',h:'BIH',a:'QAT',utc:'2026-06-24T19:00Z'},
+  {id:'C1',h:'BRA',a:'MAR',utc:'2026-06-13T22:00Z'},
+  {id:'C2',h:'HAI',a:'SCO',utc:'2026-06-14T01:00Z'},
+  {id:'C3',h:'SCO',a:'MAR',utc:'2026-06-19T22:00Z'},
+  {id:'C4',h:'BRA',a:'HAI',utc:'2026-06-20T00:30Z'},
+  {id:'C5',h:'SCO',a:'BRA',utc:'2026-06-24T22:00Z'},
+  {id:'C6',h:'MAR',a:'HAI',utc:'2026-06-24T22:00Z'},
+  {id:'D1',h:'USA',a:'PAR',utc:'2026-06-13T01:00Z'},
+  {id:'D2',h:'AUS',a:'TUR',utc:'2026-06-14T04:00Z'},
+  {id:'D3',h:'USA',a:'AUS',utc:'2026-06-19T19:00Z'},
+  {id:'D4',h:'TUR',a:'PAR',utc:'2026-06-20T03:00Z'},
+  {id:'D5',h:'TUR',a:'USA',utc:'2026-06-26T02:00Z'},
+  {id:'D6',h:'PAR',a:'AUS',utc:'2026-06-26T02:00Z'},
+  {id:'E1',h:'GER',a:'CUW',utc:'2026-06-14T17:00Z'},
+  {id:'E2',h:'CIV',a:'ECU',utc:'2026-06-14T23:00Z'},
+  {id:'E3',h:'GER',a:'CIV',utc:'2026-06-20T20:00Z'},
+  {id:'E4',h:'ECU',a:'CUW',utc:'2026-06-21T00:00Z'},
+  {id:'E5',h:'ECU',a:'GER',utc:'2026-06-25T20:00Z'},
+  {id:'E6',h:'CUW',a:'CIV',utc:'2026-06-25T20:00Z'},
+  {id:'F1',h:'NED',a:'JPN',utc:'2026-06-14T20:00Z'},
+  {id:'F2',h:'SWE',a:'TUN',utc:'2026-06-15T02:00Z'},
+  {id:'F3',h:'NED',a:'SWE',utc:'2026-06-20T17:00Z'},
+  {id:'F4',h:'TUN',a:'JPN',utc:'2026-06-21T04:00Z'},
+  {id:'F5',h:'JPN',a:'SWE',utc:'2026-06-26T00:00Z'},
+  {id:'F6',h:'TUN',a:'NED',utc:'2026-06-26T00:00Z'},
+  {id:'G1',h:'BEL',a:'EGY',utc:'2026-06-15T19:00Z'},
+  {id:'G2',h:'IRN',a:'NZL',utc:'2026-06-16T01:00Z'},
+  {id:'G3',h:'BEL',a:'IRN',utc:'2026-06-21T19:00Z'},
+  {id:'G4',h:'NZL',a:'EGY',utc:'2026-06-22T01:00Z'},
+  {id:'G5',h:'EGY',a:'IRN',utc:'2026-06-27T03:00Z'},
+  {id:'G6',h:'NZL',a:'BEL',utc:'2026-06-27T03:00Z'},
+  {id:'H1',h:'ESP',a:'CPV',utc:'2026-06-15T16:00Z'},
+  {id:'H2',h:'KSA',a:'URU',utc:'2026-06-15T22:00Z'},
+  {id:'H3',h:'ESP',a:'KSA',utc:'2026-06-21T16:00Z'},
+  {id:'H4',h:'URU',a:'CPV',utc:'2026-06-21T22:00Z'},
+  {id:'H5',h:'CPV',a:'KSA',utc:'2026-06-27T00:00Z'},
+  {id:'H6',h:'URU',a:'ESP',utc:'2026-06-27T00:00Z'},
+  {id:'I1',h:'FRA',a:'SEN',utc:'2026-06-16T19:00Z'},
+  {id:'I2',h:'IRQ',a:'NOR',utc:'2026-06-16T22:00Z'},
+  {id:'I3',h:'FRA',a:'IRQ',utc:'2026-06-22T21:00Z'},
+  {id:'I4',h:'NOR',a:'SEN',utc:'2026-06-23T00:00Z'},
+  {id:'I5',h:'NOR',a:'FRA',utc:'2026-06-26T19:00Z'},
+  {id:'I6',h:'SEN',a:'IRQ',utc:'2026-06-26T19:00Z'},
+  {id:'J1',h:'ARG',a:'ALG',utc:'2026-06-17T01:00Z'},
+  {id:'J2',h:'AUT',a:'JOR',utc:'2026-06-17T04:00Z'},
+  {id:'J3',h:'ARG',a:'AUT',utc:'2026-06-22T17:00Z'},
+  {id:'J4',h:'JOR',a:'ALG',utc:'2026-06-23T03:00Z'},
+  {id:'J5',h:'ALG',a:'AUT',utc:'2026-06-28T02:00Z'},
+  {id:'J6',h:'JOR',a:'ARG',utc:'2026-06-28T02:00Z'},
+  {id:'K1',h:'POR',a:'COD',utc:'2026-06-17T17:00Z'},
+  {id:'K2',h:'UZB',a:'COL',utc:'2026-06-18T02:00Z'},
+  {id:'K3',h:'POR',a:'UZB',utc:'2026-06-23T17:00Z'},
+  {id:'K4',h:'COL',a:'COD',utc:'2026-06-24T03:00Z'},
+  {id:'K5',h:'COL',a:'POR',utc:'2026-06-27T23:30Z'},
+  {id:'K6',h:'COD',a:'UZB',utc:'2026-06-27T23:30Z'},
+  {id:'L1',h:'ENG',a:'CRO',utc:'2026-06-17T20:00Z'},
+  {id:'L2',h:'GHA',a:'PAN',utc:'2026-06-17T23:00Z'},
+  {id:'L3',h:'ENG',a:'GHA',utc:'2026-06-23T20:00Z'},
+  {id:'L4',h:'PAN',a:'CRO',utc:'2026-06-23T23:00Z'},
+  {id:'L5',h:'PAN',a:'ENG',utc:'2026-06-27T21:00Z'},
+  {id:'L6',h:'CRO',a:'GHA',utc:'2026-06-27T21:00Z'},
+];
+
+function utcToVNT(utcStr) {
+  const d = new Date(utcStr);
+  const vnt = new Date(d.getTime() + 7 * 3600 * 1000);
+  const day = vnt.getUTCDate();
+  const month = vnt.getUTCMonth() + 1;
+  const hh = String(vnt.getUTCHours()).padStart(2, '0');
+  const mm = String(vnt.getUTCMinutes()).padStart(2, '0');
+  return `${day}/${month} ${hh}:${mm}`;
+}
+
+function parseVNT(str, refUtc) {
+  // Accepts "DD/M HH:MM" or "D/M HH:MM"
+  str = str.trim();
+  const m = str.match(/^(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{2})$/);
+  if (!m) return null;
+  const day = parseInt(m[1]), month = parseInt(m[2]);
+  const hh = parseInt(m[3]), mm = parseInt(m[4]);
+  // Determine year from ref utc (2026)
+  const year = 2026;
+  // Build UTC from VNT (subtract 7h)
+  const vntMs = Date.UTC(year, month - 1, day, hh, mm, 0);
+  const utcMs = vntMs - 7 * 3600 * 1000;
+  const d = new Date(utcMs);
+  const utcH = String(d.getUTCHours()).padStart(2, '0');
+  const utcM = String(d.getUTCMinutes()).padStart(2, '0');
+  const utcDay = d.getUTCDate();
+  const utcMonth = String(d.getUTCMonth() + 1).padStart(2, '0');
+  return `${year}-${utcMonth}-${String(utcDay).padStart(2,'0')}T${utcH}:${utcM}Z`;
+}
+
+// Render table
+const tbody = document.getElementById('tbody');
+let lastGroup = '';
+matches.forEach(m => {
+  const grp = m.id[0];
+  if (grp !== lastGroup) {
+    const sep = document.createElement('tr');
+    sep.className = 'group-sep';
+    sep.innerHTML = `<td colspan="5">── Bảng ${grp} ──</td>`;
+    tbody.appendChild(sep);
+    lastGroup = grp;
+  }
+  const currentVNT = utcToVNT(m.utc);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="id">${m.id}</td>
+    <td class="teams">${m.h} - ${m.a}</td>
+    <td class="current">${currentVNT}</td>
+    <td class="correct"><input type="text" id="inp_${m.id}" placeholder="${currentVNT}" oninput="checkInput('${m.id}','${currentVNT}','${m.utc}')"></td>
+    <td class="status" id="st_${m.id}"><span class="dot-empty">—</span></td>
+  `;
+  tbody.appendChild(tr);
+});
+
+function checkInput(id, currentVNT, currentUtc) {
+  const inp = document.getElementById('inp_' + id);
+  const st = document.getElementById('st_' + id);
+  const val = inp.value.trim();
+  if (!val) {
+    inp.className = '';
+    st.innerHTML = '<span class="dot-empty">—</span>';
+    return;
+  }
+  const newUtc = parseVNT(val, currentUtc);
+  if (!newUtc) {
+    inp.className = 'changed';
+    st.innerHTML = '<span style="color:#f44">?</span>';
+    return;
+  }
+  if (newUtc === currentUtc) {
+    inp.className = 'ok';
+    st.innerHTML = '<span class="dot-ok">✓</span>';
+  } else {
+    inp.className = 'changed';
+    st.innerHTML = '<span class="dot-chg">✱</span>';
+  }
+}
+
+function generateFixes() {
+  const lines = [];
+  let changeCount = 0;
+  matches.forEach(m => {
+    const inp = document.getElementById('inp_' + m.id);
+    const val = inp.value.trim();
+    if (!val) return;
+    const newUtc = parseVNT(val, m.utc);
+    if (!newUtc || newUtc === m.utc) return;
+    const oldVNT = utcToVNT(m.utc);
+    const newVNT = utcToVNT(newUtc);
+    lines.push(`${m.id}  ${m.h}-${m.a}  ${oldVNT} → ${newVNT}  (utc: '${m.utc}' → '${newUtc}')`);
+    changeCount++;
+  });
+
+  const out = document.getElementById('output');
+  const sum = document.getElementById('summary');
+  if (lines.length === 0) {
+    sum.textContent = 'Không có thay đổi nào.';
+    out.className = '';
+    out.textContent = '';
+  } else {
+    sum.textContent = `Cần sửa ${changeCount} trận:`;
+    out.className = 'has-changes';
+    out.textContent = lines.join('\n');
+  }
+}
+</script>
+</body>
+</html>
