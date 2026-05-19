@@ -73,9 +73,9 @@ const GROUP_MATCHES = [
   {id:'A1',g:'A',h:'MEX',a:'RSA',utc:'2026-06-11T19:00Z',md:1},
   {id:'A2',g:'A',h:'KOR',a:'CZE',utc:'2026-06-12T02:00Z',md:1},
   {id:'A3',g:'A',h:'CZE',a:'RSA',utc:'2026-06-18T16:00Z',md:2},
-  {id:'A4',g:'A',h:'MEX',a:'KOR',utc:'2026-06-19T02:00Z',md:2},
-  {id:'A5',g:'A',h:'CZE',a:'MEX',utc:'2026-06-25T03:00Z',md:3},
-  {id:'A6',g:'A',h:'RSA',a:'KOR',utc:'2026-06-25T03:00Z',md:3},
+  {id:'A4',g:'A',h:'MEX',a:'KOR',utc:'2026-06-19T01:00Z',md:2},
+  {id:'A5',g:'A',h:'CZE',a:'MEX',utc:'2026-06-25T01:00Z',md:3},
+  {id:'A6',g:'A',h:'RSA',a:'KOR',utc:'2026-06-25T01:00Z',md:3},
   // ── Bảng B ──────────────────────────────────────────
   {id:'B1',g:'B',h:'CAN',a:'BIH',utc:'2026-06-12T19:00Z',md:1},
   {id:'B2',g:'B',h:'QAT',a:'SUI',utc:'2026-06-13T19:00Z',md:1},
@@ -109,8 +109,8 @@ const GROUP_MATCHES = [
   {id:'F2',g:'F',h:'SWE',a:'TUN',utc:'2026-06-15T02:00Z',md:1},
   {id:'F3',g:'F',h:'NED',a:'SWE',utc:'2026-06-20T17:00Z',md:2},
   {id:'F4',g:'F',h:'TUN',a:'JPN',utc:'2026-06-21T04:00Z',md:2},
-  {id:'F5',g:'F',h:'JPN',a:'SWE',utc:'2026-06-26T00:00Z',md:3},
-  {id:'F6',g:'F',h:'TUN',a:'NED',utc:'2026-06-26T00:00Z',md:3},
+  {id:'F5',g:'F',h:'JPN',a:'SWE',utc:'2026-06-25T23:00Z',md:3},
+  {id:'F6',g:'F',h:'TUN',a:'NED',utc:'2026-06-25T23:00Z',md:3},
   // ── Bảng G ──────────────────────────────────────────
   {id:'G1',g:'G',h:'BEL',a:'EGY',utc:'2026-06-15T19:00Z',md:1},
   {id:'G2',g:'G',h:'IRN',a:'NZL',utc:'2026-06-16T01:00Z',md:1},
@@ -143,7 +143,7 @@ const GROUP_MATCHES = [
   {id:'K1',g:'K',h:'POR',a:'COD',utc:'2026-06-17T17:00Z',md:1},
   {id:'K2',g:'K',h:'UZB',a:'COL',utc:'2026-06-18T02:00Z',md:1},
   {id:'K3',g:'K',h:'POR',a:'UZB',utc:'2026-06-23T17:00Z',md:2},
-  {id:'K4',g:'K',h:'COL',a:'COD',utc:'2026-06-24T03:00Z',md:2},
+  {id:'K4',g:'K',h:'COL',a:'COD',utc:'2026-06-24T02:00Z',md:2},
   {id:'K5',g:'K',h:'COL',a:'POR',utc:'2026-06-27T23:30Z',md:3},
   {id:'K6',g:'K',h:'COD',a:'UZB',utc:'2026-06-27T23:30Z',md:3},
   // ── Bảng L ──────────────────────────────────────────
