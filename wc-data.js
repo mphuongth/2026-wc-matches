@@ -161,37 +161,38 @@ const GROUP_MATCHES = [
 // 3rd place: losers of SF (losers:true)
 const BRACKET = {
   r32:[
-    {id:'r32_1', utc:null, t1:{src:'grp',pos:1,grp:'A'}, t2:{src:'grp',pos:2,grp:'B'}},
-    {id:'r32_2', utc:null, t1:{src:'grp',pos:1,grp:'C'}, t2:{src:'3rd',rank:1}},
-    {id:'r32_3', utc:null, t1:{src:'grp',pos:1,grp:'D'}, t2:{src:'grp',pos:2,grp:'E'}},
-    {id:'r32_4', utc:null, t1:{src:'grp',pos:1,grp:'F'}, t2:{src:'3rd',rank:2}},
-    {id:'r32_5', utc:null, t1:{src:'grp',pos:1,grp:'G'}, t2:{src:'grp',pos:2,grp:'H'}},
-    {id:'r32_6', utc:null, t1:{src:'grp',pos:1,grp:'I'}, t2:{src:'3rd',rank:3}},
-    {id:'r32_7', utc:null, t1:{src:'grp',pos:1,grp:'J'}, t2:{src:'grp',pos:2,grp:'K'}},
-    {id:'r32_8', utc:null, t1:{src:'grp',pos:1,grp:'L'}, t2:{src:'3rd',rank:4}},
-    {id:'r32_9', utc:null, t1:{src:'grp',pos:2,grp:'A'}, t2:{src:'grp',pos:1,grp:'B'}},
-    {id:'r32_10',utc:null, t1:{src:'grp',pos:2,grp:'C'}, t2:{src:'3rd',rank:5}},
-    {id:'r32_11',utc:null, t1:{src:'grp',pos:2,grp:'D'}, t2:{src:'grp',pos:1,grp:'E'}},
-    {id:'r32_12',utc:null, t1:{src:'grp',pos:2,grp:'F'}, t2:{src:'3rd',rank:6}},
-    {id:'r32_13',utc:null, t1:{src:'grp',pos:2,grp:'G'}, t2:{src:'grp',pos:1,grp:'H'}},
-    {id:'r32_14',utc:null, t1:{src:'grp',pos:2,grp:'I'}, t2:{src:'3rd',rank:7}},
-    {id:'r32_15',utc:null, t1:{src:'grp',pos:2,grp:'J'}, t2:{src:'grp',pos:1,grp:'K'}},
-    {id:'r32_16',utc:null, t1:{src:'grp',pos:2,grp:'L'}, t2:{src:'3rd',rank:8}},
+    // M73  M74  M75  M76  M77  M78  M79  M80  M81  M82  M83  M84  M85  M86  M87  M88
+    {id:'r32_1',  utc:null, t1:{src:'grp',pos:2,grp:'A'}, t2:{src:'grp',pos:2,grp:'B'}},
+    {id:'r32_2',  utc:null, t1:{src:'grp',pos:1,grp:'E'}, t2:{src:'3rd',pool:'ABCDF'}},
+    {id:'r32_3',  utc:null, t1:{src:'grp',pos:1,grp:'F'}, t2:{src:'grp',pos:2,grp:'C'}},
+    {id:'r32_4',  utc:null, t1:{src:'grp',pos:1,grp:'C'}, t2:{src:'grp',pos:2,grp:'F'}},
+    {id:'r32_5',  utc:null, t1:{src:'grp',pos:1,grp:'I'}, t2:{src:'3rd',pool:'CDFGH'}},
+    {id:'r32_6',  utc:null, t1:{src:'grp',pos:2,grp:'E'}, t2:{src:'grp',pos:2,grp:'I'}},
+    {id:'r32_7',  utc:null, t1:{src:'grp',pos:1,grp:'A'}, t2:{src:'3rd',pool:'CEFHI'}},
+    {id:'r32_8',  utc:null, t1:{src:'grp',pos:1,grp:'L'}, t2:{src:'3rd',pool:'EHIJK'}},
+    {id:'r32_9',  utc:null, t1:{src:'grp',pos:1,grp:'D'}, t2:{src:'3rd',pool:'BEFIJ'}},
+    {id:'r32_10', utc:null, t1:{src:'grp',pos:1,grp:'G'}, t2:{src:'3rd',pool:'AEHIJ'}},
+    {id:'r32_11', utc:null, t1:{src:'grp',pos:2,grp:'K'}, t2:{src:'grp',pos:2,grp:'L'}},
+    {id:'r32_12', utc:null, t1:{src:'grp',pos:1,grp:'H'}, t2:{src:'grp',pos:2,grp:'J'}},
+    {id:'r32_13', utc:null, t1:{src:'grp',pos:1,grp:'B'}, t2:{src:'3rd',pool:'EFGIJ'}},
+    {id:'r32_14', utc:null, t1:{src:'grp',pos:1,grp:'J'}, t2:{src:'grp',pos:2,grp:'H'}},
+    {id:'r32_15', utc:null, t1:{src:'grp',pos:1,grp:'K'}, t2:{src:'3rd',pool:'DEIJL'}},
+    {id:'r32_16', utc:null, t1:{src:'grp',pos:2,grp:'D'}, t2:{src:'grp',pos:2,grp:'G'}},
   ],
   r16:[
-    {id:'r16_1', utc:null, prev:['r32_1','r32_2']},
-    {id:'r16_2', utc:null, prev:['r32_3','r32_4']},
-    {id:'r16_3', utc:null, prev:['r32_5','r32_6']},
-    {id:'r16_4', utc:null, prev:['r32_7','r32_8']},
-    {id:'r16_5', utc:null, prev:['r32_9','r32_10']},
-    {id:'r16_6', utc:null, prev:['r32_11','r32_12']},
-    {id:'r16_7', utc:null, prev:['r32_13','r32_14']},
-    {id:'r16_8', utc:null, prev:['r32_15','r32_16']},
+    {id:'r16_1', utc:null, prev:['r32_2','r32_5']},   // W(1E) vs W(1I)
+    {id:'r16_2', utc:null, prev:['r32_1','r32_3']},   // W(2A/2B) vs W(1F)
+    {id:'r16_3', utc:null, prev:['r32_4','r32_6']},   // W(1C) vs W(2E/2I)
+    {id:'r16_4', utc:null, prev:['r32_7','r32_8']},   // W(1A) vs W(1L)
+    {id:'r16_5', utc:null, prev:['r32_11','r32_12']}, // W(2K/2L) vs W(1H)
+    {id:'r16_6', utc:null, prev:['r32_9','r32_10']},  // W(1D) vs W(1G)
+    {id:'r16_7', utc:null, prev:['r32_14','r32_16']}, // W(1J) vs W(2D/2G)
+    {id:'r16_8', utc:null, prev:['r32_13','r32_15']}, // W(1B) vs W(1K)
   ],
   qf:[
     {id:'qf_1', utc:null, prev:['r16_1','r16_2']},
-    {id:'qf_2', utc:null, prev:['r16_3','r16_4']},
-    {id:'qf_3', utc:null, prev:['r16_5','r16_6']},
+    {id:'qf_2', utc:null, prev:['r16_5','r16_6']},
+    {id:'qf_3', utc:null, prev:['r16_3','r16_4']},
     {id:'qf_4', utc:null, prev:['r16_7','r16_8']},
   ],
   sf:[

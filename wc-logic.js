@@ -95,8 +95,12 @@ function resolveSlot(slotDef, allStandings, thirdPlace) {
     return st && st[slotDef.pos - 1] ? st[slotDef.pos - 1].team : null;
   }
   if (slotDef.src === '3rd') {
-    const t = thirdPlace[slotDef.rank - 1];
-    return t ? t.team : null;
+    if (slotDef.pool) {
+      const groups = slotDef.pool.split('');
+      const match = thirdPlace.find(t => groups.includes(t.fromGroup));
+      return match ? match.team : null;
+    }
+    return thirdPlace[slotDef.rank - 1]?.team ?? null;
   }
   return null;
 }
@@ -149,7 +153,7 @@ function slotLabel(slotDef) {
     const pos = ['Nhất','Nhì','Ba'][slotDef.pos - 1] || slotDef.pos;
     return `${pos} Bảng ${slotDef.grp}`;
   }
-  if (slotDef.src === '3rd') return `Hạng 3 tốt #${slotDef.rank}`;
+  if (slotDef.src === '3rd') return `Hạng 3 (${slotDef.pool || '#' + slotDef.rank})`;
   return 'TBD';
 }
 
