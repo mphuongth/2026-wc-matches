@@ -82,9 +82,9 @@ const matches = [
   {id:'A1',h:'MEX',a:'RSA',utc:'2026-06-11T19:00Z'},
   {id:'A2',h:'KOR',a:'CZE',utc:'2026-06-12T02:00Z'},
   {id:'A3',h:'CZE',a:'RSA',utc:'2026-06-18T16:00Z'},
-  {id:'A4',h:'MEX',a:'KOR',utc:'2026-06-19T02:00Z'},
-  {id:'A5',h:'CZE',a:'MEX',utc:'2026-06-25T03:00Z'},
-  {id:'A6',h:'RSA',a:'KOR',utc:'2026-06-25T03:00Z'},
+  {id:'A4',h:'MEX',a:'KOR',utc:'2026-06-19T01:00Z'},
+  {id:'A5',h:'CZE',a:'MEX',utc:'2026-06-25T01:00Z'},
+  {id:'A6',h:'RSA',a:'KOR',utc:'2026-06-25T01:00Z'},
   {id:'B1',h:'CAN',a:'BIH',utc:'2026-06-12T19:00Z'},
   {id:'B2',h:'QAT',a:'SUI',utc:'2026-06-13T19:00Z'},
   {id:'B3',h:'SUI',a:'BIH',utc:'2026-06-18T19:00Z'},
@@ -113,8 +113,8 @@ const matches = [
   {id:'F2',h:'SWE',a:'TUN',utc:'2026-06-15T02:00Z'},
   {id:'F3',h:'NED',a:'SWE',utc:'2026-06-20T17:00Z'},
   {id:'F4',h:'TUN',a:'JPN',utc:'2026-06-21T04:00Z'},
-  {id:'F5',h:'JPN',a:'SWE',utc:'2026-06-26T00:00Z'},
-  {id:'F6',h:'TUN',a:'NED',utc:'2026-06-26T00:00Z'},
+  {id:'F5',h:'JPN',a:'SWE',utc:'2026-06-25T23:00Z'},
+  {id:'F6',h:'TUN',a:'NED',utc:'2026-06-25T23:00Z'},
   {id:'G1',h:'BEL',a:'EGY',utc:'2026-06-15T19:00Z'},
   {id:'G2',h:'IRN',a:'NZL',utc:'2026-06-16T01:00Z'},
   {id:'G3',h:'BEL',a:'IRN',utc:'2026-06-21T19:00Z'},
@@ -142,7 +142,7 @@ const matches = [
   {id:'K1',h:'POR',a:'COD',utc:'2026-06-17T17:00Z'},
   {id:'K2',h:'UZB',a:'COL',utc:'2026-06-18T02:00Z'},
   {id:'K3',h:'POR',a:'UZB',utc:'2026-06-23T17:00Z'},
-  {id:'K4',h:'COL',a:'COD',utc:'2026-06-24T03:00Z'},
+  {id:'K4',h:'COL',a:'COD',utc:'2026-06-24T02:00Z'},
   {id:'K5',h:'COL',a:'POR',utc:'2026-06-27T23:30Z'},
   {id:'K6',h:'COD',a:'UZB',utc:'2026-06-27T23:30Z'},
   {id:'L1',h:'ENG',a:'CRO',utc:'2026-06-17T20:00Z'},
@@ -151,6 +151,47 @@ const matches = [
   {id:'L4',h:'PAN',a:'CRO',utc:'2026-06-23T23:00Z'},
   {id:'L5',h:'PAN',a:'ENG',utc:'2026-06-27T21:00Z'},
   {id:'L6',h:'CRO',a:'GHA',utc:'2026-06-27T21:00Z'},
+];
+
+// Knockout matches — utc: null means NEW entry (not yet in data)
+const knockout = [
+  // ── Vòng 32 ──
+  {id:'r32_1',  label:'V32 #1  Nhất A vs Nhì B',   utc:null},
+  {id:'r32_2',  label:'V32 #2  Nhất C vs Nhì 3rd', utc:null},
+  {id:'r32_3',  label:'V32 #3  Nhất D vs Nhì E',   utc:null},
+  {id:'r32_4',  label:'V32 #4  Nhất F vs Nhì 3rd', utc:null},
+  {id:'r32_5',  label:'V32 #5  Nhất G vs Nhì H',   utc:null},
+  {id:'r32_6',  label:'V32 #6  Nhất I vs Nhì 3rd', utc:null},
+  {id:'r32_7',  label:'V32 #7  Nhất J vs Nhì K',   utc:null},
+  {id:'r32_8',  label:'V32 #8  Nhất L vs Nhì 3rd', utc:null},
+  {id:'r32_9',  label:'V32 #9  Nhì A vs Nhất B',   utc:null},
+  {id:'r32_10', label:'V32 #10 Nhì C vs Nhì 3rd',  utc:null},
+  {id:'r32_11', label:'V32 #11 Nhì D vs Nhất E',   utc:null},
+  {id:'r32_12', label:'V32 #12 Nhì F vs Nhì 3rd',  utc:null},
+  {id:'r32_13', label:'V32 #13 Nhì G vs Nhất H',   utc:null},
+  {id:'r32_14', label:'V32 #14 Nhì I vs Nhì 3rd',  utc:null},
+  {id:'r32_15', label:'V32 #15 Nhì J vs Nhất K',   utc:null},
+  {id:'r32_16', label:'V32 #16 Nhì L vs Nhì 3rd',  utc:null},
+  // ── Vòng 16 ──
+  {id:'r16_1',  label:'V16 #1  Thắng V32 #1 vs #2', utc:null},
+  {id:'r16_2',  label:'V16 #2  Thắng V32 #3 vs #4', utc:null},
+  {id:'r16_3',  label:'V16 #3  Thắng V32 #5 vs #6', utc:null},
+  {id:'r16_4',  label:'V16 #4  Thắng V32 #7 vs #8', utc:null},
+  {id:'r16_5',  label:'V16 #5  Thắng V32 #9 vs #10',utc:null},
+  {id:'r16_6',  label:'V16 #6  Thắng V32 #11 vs #12',utc:null},
+  {id:'r16_7',  label:'V16 #7  Thắng V32 #13 vs #14',utc:null},
+  {id:'r16_8',  label:'V16 #8  Thắng V32 #15 vs #16',utc:null},
+  // ── Tứ kết ──
+  {id:'qf_1',   label:'Tứ kết #1  Thắng V16 #1 vs #2', utc:null},
+  {id:'qf_2',   label:'Tứ kết #2  Thắng V16 #3 vs #4', utc:null},
+  {id:'qf_3',   label:'Tứ kết #3  Thắng V16 #5 vs #6', utc:null},
+  {id:'qf_4',   label:'Tứ kết #4  Thắng V16 #7 vs #8', utc:null},
+  // ── Bán kết ──
+  {id:'sf_1',   label:'Bán kết #1  Thắng TK #1 vs #2', utc:null},
+  {id:'sf_2',   label:'Bán kết #2  Thắng TK #3 vs #4', utc:null},
+  // ── Chung kết ──
+  {id:'third',  label:'Hạng Ba',   utc:null},
+  {id:'final',  label:'Chung Kết', utc:null},
 ];
 
 function utcToVNT(utcStr) {
@@ -207,6 +248,24 @@ matches.forEach(m => {
   tbody.appendChild(tr);
 });
 
+// Knockout section header
+const koHeader = document.createElement('tr');
+koHeader.className = 'group-sep';
+koHeader.innerHTML = `<td colspan="5" style="color:#fa4;padding-top:10px">── VÒNG LOẠI TRỰC TIẾP (nhập giờ mới) ──</td>`;
+tbody.appendChild(koHeader);
+
+knockout.forEach(m => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="id" style="color:#fa4">${m.id}</td>
+    <td class="teams" style="color:#ccc;font-size:11px">${m.label}</td>
+    <td class="current" style="color:#555">TBD</td>
+    <td class="correct"><input type="text" id="inp_${m.id}" placeholder="DD/M HH:MM" oninput="checkKnockout('${m.id}')"></td>
+    <td class="status" id="st_${m.id}"><span class="dot-empty">—</span></td>
+  `;
+  tbody.appendChild(tr);
+});
+
 function checkInput(id, currentVNT, currentUtc) {
   const inp = document.getElementById('inp_' + id);
   const st = document.getElementById('st_' + id);
@@ -231,9 +290,21 @@ function checkInput(id, currentVNT, currentUtc) {
   }
 }
 
+function checkKnockout(id) {
+  const inp = document.getElementById('inp_' + id);
+  const st = document.getElementById('st_' + id);
+  const val = inp.value.trim();
+  if (!val) { inp.className = ''; st.innerHTML = '<span class="dot-empty">—</span>'; return; }
+  const utc = parseVNT(val, null);
+  if (!utc) { inp.className = 'changed'; st.innerHTML = '<span style="color:#f44">?</span>'; return; }
+  inp.className = 'ok';
+  st.innerHTML = '<span class="dot-ok">✓</span>';
+}
+
 function generateFixes() {
   const lines = [];
   let changeCount = 0;
+
   matches.forEach(m => {
     const inp = document.getElementById('inp_' + m.id);
     const val = inp.value.trim();
@@ -246,16 +317,30 @@ function generateFixes() {
     changeCount++;
   });
 
+  const koLines = [];
+  knockout.forEach(m => {
+    const inp = document.getElementById('inp_' + m.id);
+    const val = inp.value.trim();
+    if (!val) return;
+    const newUtc = parseVNT(val, null);
+    if (!newUtc) return;
+    koLines.push(`${m.id}  utc:'${newUtc}'  (${val} VNT)`);
+  });
+
   const out = document.getElementById('output');
   const sum = document.getElementById('summary');
-  if (lines.length === 0) {
+  const total = changeCount + koLines.length;
+  if (total === 0) {
     sum.textContent = 'Không có thay đổi nào.';
     out.className = '';
     out.textContent = '';
   } else {
-    sum.textContent = `Cần sửa ${changeCount} trận:`;
+    sum.textContent = `Cần sửa ${changeCount} trận vòng bảng + ${koLines.length} trận knockout:`;
     out.className = 'has-changes';
-    out.textContent = lines.join('\n');
+    let text = '';
+    if (lines.length) text += '=== VÒNG BẢNG ===\n' + lines.join('\n') + '\n\n';
+    if (koLines.length) text += '=== KNOCKOUT ===\n' + koLines.join('\n');
+    out.textContent = text.trim();
   }
 }
 </script>
