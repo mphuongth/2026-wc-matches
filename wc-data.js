@@ -123,8 +123,8 @@ const GROUP_MATCHES = [
   {id:'H2',g:'H',h:'KSA',a:'URU',utc:'2026-06-15T22:00Z',md:1},
   {id:'H3',g:'H',h:'ESP',a:'KSA',utc:'2026-06-21T16:00Z',md:2},
   {id:'H4',g:'H',h:'URU',a:'CPV',utc:'2026-06-21T22:00Z',md:2},
-  {id:'H5',g:'H',h:'CPV',a:'KSA',utc:'2026-06-27T02:00Z',md:3},
-  {id:'H6',g:'H',h:'URU',a:'ESP',utc:'2026-06-27T02:00Z',md:3},
+  {id:'H5',g:'H',h:'CPV',a:'KSA',utc:'2026-06-27T00:00Z',md:3},
+  {id:'H6',g:'H',h:'URU',a:'ESP',utc:'2026-06-27T00:00Z',md:3},
   // ── Bảng I ──────────────────────────────────────────
   {id:'I1',g:'I',h:'FRA',a:'SEN',utc:'2026-06-16T19:00Z',md:1},
   {id:'I2',g:'I',h:'IRQ',a:'NOR',utc:'2026-06-16T22:00Z',md:1},
