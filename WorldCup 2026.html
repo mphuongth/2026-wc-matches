@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FIFA World Cup 2026™ — Bảng Kết Quả</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="wc-data.js"></script>
+<script src="wc-logic.js"></script>
+<script type="text/babel" src="wc-groups.jsx"></script>
+<script type="text/babel" src="wc-bracket.jsx"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #F0F4F8;
+    color: #1E293B;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #1E3A5F; border-radius: 4px; }
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+  input[type=number] { -moz-appearance: textfield; }
+  /* Group tab scroll strip */
+  .group-scroller::-webkit-scrollbar { height: 3px; }
+  .group-scroller::-webkit-scrollbar-track { background: transparent; }
+  .group-scroller::-webkit-scrollbar-thumb { background: #C8102E; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useMemo } = React;
+
+// ── Header ───────────────────────────────────────────────────────────────────
+function Header({ tab, setTab }) {
+  return (
+    <header style={{
+      background: 'linear-gradient(180deg, #002060 0%, #001845 100%)',
+      borderBottom: '1px solid rgba(200,16,46,0.3)',
+      position: 'sticky', top: 0, zIndex: 50,
+    }}>
+      {/* Top bar */}
+      <div style={{
+        background: '#C8102E',
+        padding: '4px 16px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1, color: '#FFE8EC' }}>
+          FIFA WORLD CUP 2026™
+        </span>
+        <span style={{ fontSize: 11, color: 'rgba(255,232,236,0.7)' }}>
+          🇻🇳 Giờ Việt Nam (VNT/UTC+7)
+        </span>
+      </div>
+
+      {/* Title + nav */}
+      <div style={{ maxWidth: '100%', margin: '0 auto', padding: '12px 24px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+          <div style={{ fontSize: 28 }}>⚽</div>
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: '#FFF', letterSpacing: -0.5 }}>
+              World Cup 2026
+            </div>
+            <div style={{ fontSize: 11, color: '#94A3B8', letterSpacing: 0.5 }}>
+              USA · Canada · Mexico &nbsp;|&nbsp; 11 Tháng 6 – 19 Tháng 7
+            </div>
+          </div>
+          <div style={{ flex: 1 }} />
+          <div style={{ fontSize: 11, color: '#94A3B8', textAlign: 'right', lineHeight: 1.5 }}>
+            48 đội · 12 bảng · 104 trận
+          </div>
+        </div>
+
+        {/* Tab nav */}
+        <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+          {[
+            ['groups',   '⊞  Vòng Bảng'],
+            ['schedule', '📅  Lịch Thi Đấu'],
+            ['knockout', '⚡  Vòng Loại Trực Tiếp'],
+          ].map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              style={{
+                padding: '10px 20px',
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 13, fontWeight: 700,
+                color: tab === key ? '#FFF' : '#94A3B8',
+                borderBottom: tab === key ? '2px solid #C8102E' : '2px solid transparent',
+                transition: 'all 0.15s',
+                letterSpacing: 0.3,
+              }}
+            >{label}</button>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+// ── Stats strip ──────────────────────────────────────────────────────────────
+function StatsStrip({ groupResults }) {
+  const played = Object.values(groupResults).filter(r => r && r.h != null && r.a != null).length;
+  const total = GROUP_MATCHES.length;
+  const goals = Object.values(groupResults).filter(r => r && r.h != null).reduce((s, r) => s + r.h + r.a, 0);
+  const pct = Math.round(played / total * 100);
+
+  return (
+    <div style={{
+      display: 'flex', gap: 20, padding: '10px 0 14px',
+      borderBottom: '1px solid #E2E8F0',
+      marginBottom: 16, flexWrap: 'wrap',
+    }}>
+      {[
+        ['Trận đã nhập', `${played} / ${total}`],
+        ['Bàn thắng', goals],
+        ['Tiến độ', `${pct}%`],
+      ].map(([l, v]) => (
+        <div key={l}>
+          <div style={{ fontSize: 10, color: '#64748B', fontWeight: 700, letterSpacing: 0.5, marginBottom: 2 }}>
+            {l.toUpperCase()}
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: '#1D4ED8' }}>{v}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Main App ─────────────────────────────────────────────────────────────────
+function App() {
+  const [tab, setTab] = useState('groups');
+
+  const [groupResults, setGroupResults] = useState(() => {
+    try {
+      const saved = localStorage.getItem('wc2026_gresults');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+
+  const [knockoutResults, setKnockoutResults] = useState(() => {
+    try {
+      const saved = localStorage.getItem('wc2026_kresults');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('wc2026_gresults', JSON.stringify(groupResults));
+  }, [groupResults]);
+
+  useEffect(() => {
+    localStorage.setItem('wc2026_kresults', JSON.stringify(knockoutResults));
+  }, [knockoutResults]);
+
+  function handleGroupSave(matchId, result) {
+    setGroupResults(prev => ({ ...prev, [matchId]: result }));
+  }
+
+  function handleKnockoutSave(matchId, result) {
+    setKnockoutResults(prev => ({ ...prev, [matchId]: result }));
+  }
+
+  const allStandings = useMemo(() => computeAllStandings(groupResults), [groupResults]);
+  const thirdPlace   = useMemo(() => computeThirdPlace(allStandings), [allStandings]);
+
+  return (
+    <div style={{ minHeight: '100vh' }}>
+      <Header tab={tab} setTab={setTab} />
+
+      <main style={{ maxWidth: '100%', margin: '0 auto', padding: '16px 24px 40px' }}>
+        {tab === 'groups' && (
+          <>
+            <StatsStrip groupResults={groupResults} />
+            <GroupStageTab results={groupResults} onSave={handleGroupSave} />
+          </>
+        )}
+
+        {tab === 'schedule' && (
+          <>
+            <StatsStrip groupResults={groupResults} />
+            <ScheduleTab results={groupResults} onSave={handleGroupSave} />
+          </>
+        )}
+
+        {tab === 'knockout' && (
+          <>
+            <div style={{ marginBottom: 16, padding: '10px 14px', background: '#EFF6FF', borderRadius: 8, border: '1px solid #BFDBFE', fontSize: 12, color: '#1D4ED8', lineHeight: 1.6 }}>
+              💡 Điền kết quả vòng bảng trước để xem đội tự động vào các ô. Click vào ô đấu để nhập kết quả vòng loại trực tiếp.
+            </div>
+            <KnockoutTab
+              groupResults={groupResults}
+              knockoutResults={knockoutResults}
+              onSave={handleKnockoutSave}
+              allStandings={allStandings}
+              thirdPlace={thirdPlace}
+            />
+          </>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer style={{
+        borderTop: '1px solid #E2E8F0',
+        padding: '12px 16px', textAlign: 'center',
+        fontSize: 11, color: '#94A3B8',
+      }}>
+        Kết quả lưu tự động trong trình duyệt · Dữ liệu: FIFA / Al Jazeera · Giờ hiển thị: Việt Nam (VNT)
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
