@@ -169,6 +169,11 @@ function KnockoutMatchCard({ matchDef, allStandings, thirdPlace, knockoutResults
         boxShadow: isHighlighted ? '0 2px 12px rgba(200,16,46,0.1)' : '0 1px 3px rgba(0,0,0,0.06)',
         transition:'box-shadow 0.15s',
       }} onClick={() => (t1 && t2) && setEditing(true)} title={t1 && t2 ? 'Click để nhập kết quả' : ''}>
+        {matchDef.utc && (() => { const t = toVNTime(matchDef.utc); return (
+          <div style={{ fontSize:10, color:'#94A3B8', textAlign:'center', padding:'3px 6px', background:'#F8FAFC', borderBottom:'1px solid #F1F5F9', whiteSpace:'nowrap' }}>
+            {t.day} {t.date} · {t.time} VNT
+          </div>
+        ); })()}
         <TeamSlot teamCode={t1} score={hasResult ? r.h : null} isWinner={winner === t1} label={getLabel('t1')} />
         <div style={{ height:1, background:'#F1F5F9' }} />
         <TeamSlot teamCode={t2} score={hasResult ? r.a : null} isWinner={winner === t2} label={getLabel('t2')} />
